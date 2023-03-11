@@ -11,3 +11,8 @@ This shows an example of using an in-memory database.
 It runs on the main thread and might be used within hooks
 as any such database connection might be.
 
+There is a README with more details.
+
+## worker
+
+*in process*
