@@ -7,6 +7,17 @@ Steps:
 - Install packages `npm i`
 - Run server `npm run dev`
 
+## 2023-03-11 (part 3) 
+
+With it running in the main thread, I then tried to send the 
+special headers (see info the `next.config.js` file). But now
+I see this:
+
+```
+sqlite3-bundler-friendly.mjs?607f:11568 Ignoring inability to install OPFS sqlite3_vfs: The OPFS sqlite3_vfs cannot run in the main thread because it requires Atomics.wait().
+```
+
+Which means I need to go back to using a worker. Sigh.
 
 ## 2023-03-11 (part 2)
 
