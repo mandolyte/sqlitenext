@@ -1,16 +1,51 @@
 import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
-
+var db
 sqlite3InitModule().then((sqlite3) => {
   const capi = sqlite3.capi /*C-style API*/,
     oo = sqlite3.oo1; /*high-level OO API*/
 
-  if ( capi ) {
+  if ( oo ) {
     console.log(
       "sqlite3 version",
       capi.sqlite3_libversion(),
       capi.sqlite3_sourceid()
     );
-    const db = new sqlite3.oo1.DB();
+    db = new sqlite3.oo1.DB();
+    db.exec("CREATE TABLE IF NOT EXISTS t(a,b)");
+    let i;
+    for( i = 20; i <= 25; ++i ){
+      db.exec({
+        sql: "insert into t(a,b) values (?,?)",
+        // bind by parameter index...
+        bind: [i, i*2]
+      });
+      db.exec({
+        sql: "insert into t(a,b) values ($a,$b)",
+        // bind by parameter name...
+        bind: {$a: i * 10, $b: i * 20}
+      });
+    }   
+    console.log("Database created, table t created, rows added") 
+  }   
+});
+
+onmessage = (e) => {
+    console.log('onmessage(): Message received from main script:',e);
+    // postMessage(workerResult);
+
+    let rows = [];
+    db.exec({
+      sql: e.data,
+      rowMode: 'object',
+      resultRows: rows,
+    });
+    const results = JSON.stringify(rows,null,2)
+    console.log("onmessage(): Result rows:\n"+JSON.stringify(rows,null,2));
+
+
+  }
+
+/*
     db.exec("CREATE TABLE IF NOT EXISTS t(a,b)");
     try {
       console.log("Create a table...\n");
@@ -62,4 +97,4 @@ sqlite3InitModule().then((sqlite3) => {
   } else {
     console.log("capi not defined")
   }
-});
+*/

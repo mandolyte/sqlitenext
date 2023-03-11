@@ -1,21 +1,53 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [db,setDb] = useState<any>(null)
+  const [lines, setLines] = useState("")
+  const [dbWorker,setDbWorker] = useState<any>(null)
   let needsSetup = true
 
   useEffect( () => {
-    if ( !db && needsSetup ) {
+    if ( !dbWorker && needsSetup ) {
       needsSetup = false
-      const dbWorker = new Worker(new URL("../pages/dbworker.js", import.meta.url));
-      setDb(db)
+      const _dbWorker = new Worker(new URL("../pages/dbworker.js", import.meta.url));
+
+      /*
+        this is a kludge... need a message that let's me know that the 
+        database is ready. Then when ready, set a state variable.
+        Then that "ready" state can be used in other hooks
+      */
+      setTimeout(() => {
+        console.log("Delayed for 1 second.");
+        setDbWorker(_dbWorker);
+      }, 1000);
     }
   }, []);
 
+  useEffect( () => {
+
+    if (dbWorker) {
+      console.log("Posting a message")
+      dbWorker.postMessage("select a, b from t order by a limit 3")
+    }
+  
+  }, [dbWorker])
+
+  useEffect( () => {
+    if (dbWorker) {
+      dbWorker.onmessage = (e :any) => {
+        setLines(e.data);
+        console.log('dbWorker.onmessage() Message received from worker:', e);
+      }
+    }
+  }, [dbWorker])
+
+  // dbWorker.onmessage = (e :any) => {
+  //   setLines(e.data);
+  //   console.log('dbWorker.onmessage() Message received from worker:', e);
+  // }
 
   return (<div>
     <h1>SQLite3 in Next.js application</h1>
-    {/* <pre>{lines}</pre> */}
+    <pre>{lines}</pre>
     </div>
   );
 }
