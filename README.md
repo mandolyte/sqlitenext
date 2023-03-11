@@ -7,20 +7,25 @@ Steps:
 - Install packages `npm i`
 - Run server `npm run dev`
 
-**NOTE**
-At present this does not work. In the console are 
-these errors:
+Finally have something working using this snapshot (as of 2023-03-11)
+https://sqlite.org/wasm/uv/snapshot.html
 
+
+This isn't very interesting yet; here are some remarks on what to look for:
+
+- The dbWork is running twice... not sure why.
+- The page doesn't show any; all the action is in the console
+- The Worker is doing all the work right now to keep it simple
+- OPFS isn't working; this is the message in the console:
 ```
-Uncaught Error: Expecting self.sqlite3InitModule to be defined by the Emscripten build.
-    at eval (sqlite3.js?f311:10052:11)
-    at eval (sqlite3.js?f311:10119:1)
-    at ./lib/sqlite3.js (lib_dbWorker_js.js:41:1)
-    at options.factory (lib_dbWorker_js.js:608:31)
-    at __webpack_require__ (lib_dbWorker_js.js:81:33)
-    at fn (lib_dbWorker_js.js:263:21)
-    at eval (dbWorker.js:2:69)
-    at ./lib/dbWorker.js (lib_dbWorker_js.js:30:1)
-    at options.factory (lib_dbWorker_js.js:608:31)
-    at __webpack_require__ (lib_dbWorker_js.js:81:33)
+sqlite3-bundler-friendly.mjs?0aee:11568 
+Ignoring inability to install OPFS sqlite3_vfs: 
+Cannot install OPFS: 
+Missing SharedArrayBuffer and/or Atomics. 
+The server must emit the COOP/COEP response headers to enable those. 
+See https://sqlite.org/wasm/doc/trunk/persistence.md#coop-coep
 ```
+
+To do:
+- learn how to use Workers 
+- learn how make OPFS work
