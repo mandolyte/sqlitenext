@@ -1,0 +1,88 @@
+import { useEffect, useState } from "react";
+
+
+
+export default function Home() {
+
+  const [lines, setLines] = useState("")
+  const [dbWorker,setDbWorker] = useState<any>(null)
+  const [dbReady, setDbReady] = useState(false)
+  let needsSetup = true
+
+  function waitForDbReady(dbw :Worker) {
+    let theMessage = { type: 'isready', query: ''}
+    console.log("waiting...", dbReady)
+    setTimeout(
+      () => {
+        dbw.postMessage(theMessage);
+        if ( !dbReady ) {
+          waitForDbReady(dbw)
+        } 
+      },
+      100
+    )
+  }
+
+  useEffect( () => {
+    if ( !dbWorker && needsSetup ) {
+      needsSetup = false
+      const _dbWorker = new Worker(new URL("../pages/dbworker.js", import.meta.url));
+      setDbWorker(_dbWorker)
+      waitForDbReady(_dbWorker)
+      /*
+        this is a kludge... need a message that let's me know that the 
+        database is ready. Then when ready, set a state variable.
+        Then that "ready" state can be used in other hooks
+      */
+      // setTimeout(() => {
+      //   console.log("Delayed for 1 second.");
+      //   setDbWorker(_dbWorker);
+      // }, 1000);
+    }
+  }, []);
+
+  useEffect( () => {
+
+    if (dbReady) {
+      console.log("Posting a message")
+      dbWorker.postMessage({
+        type: 'query',
+        query: "select a, b from t order by a limit 3"
+      })
+    }
+  
+  }, [dbReady])
+
+  useEffect(() => {
+    if (dbWorker) {
+      dbWorker.onmessage = (e: MessageEvent<any>) => {
+        console.log('dbWorker.onmessage() Message received from worker:', e);
+        const msg :any = JSON.parse(e.data)
+        if ( !dbReady && msg?.type === 'isready' ) {
+          // console.log("x1")
+          if (msg?.results === 'true')
+            // console.log("x2")
+            setDbReady(true);
+            return;
+        }
+
+        setLines(lines + "\n" + msg?.results);
+      }
+    }
+  }, [dbWorker, dbReady]);
+
+  return (<div>
+    <h1>SQLite3 in Next.js application</h1>
+    <pre>{lines}</pre>
+    </div>
+  );
+}
+
+
+/*
+  dbWorker.onmessage = (e :any) => {
+    setLines(e.data);
+    console.log('dbWorker.onmessage() Message received from worker:', e);
+  }
+
+*/

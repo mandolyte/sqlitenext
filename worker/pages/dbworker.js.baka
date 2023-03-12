@@ -29,20 +29,44 @@ sqlite3InitModule().then((sqlite3) => {
   }   
 });
 
+// message object format
+// { type: "query|isready|...", query: 'some sql or dml'}
+// returned object format
+// { type: "isready", results: 'string' }
 onmessage = (e) => {
     console.log('onmessage(): Message received from main script:',e);
-    // postMessage(workerResult);
+
+    const msg = e.data
+    const query = msg.query
+    const type = msg.type
+    console.log("type is:", type)
+    console.log("query is:", query)
+
+    if ( type === 'isready' ) {
+        let results = [];
+        db.exec({
+            sql: "select count(*) from t",
+            rowMode: 'object',
+            resultRows: results,
+        })
+        if (results.length > 0) {
+            postMessage( JSON.stringify({ type: 'isready', results: 'true' }) );
+        } else {
+            postMessage( JSON.stringify({ type: 'isready', results: 'false' }) );
+        }
+        return
+    }
+
 
     let rows = [];
     db.exec({
-      sql: e.data,
+      sql: query,
       rowMode: 'object',
       resultRows: rows,
     });
     const results = JSON.stringify(rows,null,2)
     console.log("onmessage(): Result rows:\n"+JSON.stringify(rows,null,2));
-    postMessage(results)
-
+    postMessage(JSON.stringify({ isready: true, results: results}));
   }
 
 /*
