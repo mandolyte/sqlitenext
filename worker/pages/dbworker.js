@@ -26,6 +26,7 @@ sqlite3InitModule().then((sqlite3) => {
       });
     }   
     console.log("Database created, table t created, rows added") 
+    postMessage("dbready")
   }   
 });
 

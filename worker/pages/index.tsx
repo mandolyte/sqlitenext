@@ -9,16 +9,12 @@ export default function Home() {
     if ( !dbWorker && needsSetup ) {
       needsSetup = false
       const _dbWorker = new Worker(new URL("../pages/dbworker.js", import.meta.url));
-
-      /*
-        this is a kludge... need a message that let's me know that the 
-        database is ready. Then when ready, set a state variable.
-        Then that "ready" state can be used in other hooks
-      */
-      setTimeout(() => {
-        console.log("Delayed for 1 second.");
-        setDbWorker(_dbWorker);
-      }, 1000);
+      _dbWorker.onmessage = (e :any) => {
+        console.log('_dbWorker.onmessage() Message received from worker:', e);
+        if ( e.data === 'dbready') {
+          setDbWorker(_dbWorker);
+        }
+      }
     }
   }, []);
 
