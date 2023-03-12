@@ -30,7 +30,7 @@ export default function Home() {
   useEffect( () => {
     if (dbWorker) {
       dbWorker.onmessage = (e :any) => {
-        setLines(e.data);
+        setLines(lines + "\n" + e.data);
         console.log('dbWorker.onmessage() Message received from worker:', e);
       }
     }

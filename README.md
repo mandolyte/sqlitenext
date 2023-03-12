@@ -15,4 +15,4 @@ There is a README with more details.
 
 ## worker
 
-*in process*
+Now working. See README for details.
