@@ -12,3 +12,23 @@ This demo adds a text box where SQL queries can be entered.
 An example query is shown that can be entered or copy/pasted.
 
 Errors are now caught and a message is shown.
+
+These can be copied and pasted in all at once:
+
+```sql
+CREATE TABLE IF NOT EXISTS u(a,b);
+
+insert into u(a,b) values ('a','b');
+insert into u(a,b) values ('c','d');
+insert into u(a,b) values ('e','f');
+
+select count(*) from u;
+```
+
+Other queries to try:
+```
+select * from u;
+
+select max(b) as maxb from u
+
+```
