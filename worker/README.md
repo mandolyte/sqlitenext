@@ -7,7 +7,8 @@ Steps:
 - Install packages `yarn install`
 - Run server `yarn dev`
 
-Messages are being passed to worker and results received and shown on screen.
+- Messages are being passed to worker and results received and shown on screen.
+- When the database is ready, the worker posts a message that it is ready for queries.
 
 Example using blob urls:
 https://plainenglish.io/blog/web-worker-in-react
@@ -17,7 +18,6 @@ https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-web-worke
 (this one uses a Ref)
 
 To Do:
-- the technique of waiting a second (using `setTimeout`) is a kludge. Need a better way to know when the database is ready
 - do an example with the setup in an app context
 - add an input box where I can enter the SQL to use
 - do an example where the worker code is passed as a blob url (see above); this might get me passed the problem of enabling OPFS... but not sure
