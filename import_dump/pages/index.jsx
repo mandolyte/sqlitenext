@@ -53,9 +53,25 @@ export default function Home() {
         large dump file. The file has nearly 99K rows.
 
         This will be done in the web worker at startup.
+
       </p>
       <p>Test 1 did not return after several minutes.</p>
-      <p>Test 2 will reduce the number of rows to about 10K</p>
+      <p>Test 2 will reduce the number of rows to about 10K.
+        Results show that it runs at about 1s per 1000 rows for this situation.
+      </p>
+      
+      <p>Here are the timings:</p>
+      <pre>
+      Time to initialize 2ms.<br/>
+      Time to fetch dump file 657ms<br/>
+      Time to import dump 9949ms<br/>
+      </pre>
+      
+      <p>Try these two queries:</p>
+      <pre>
+      select * from sqlite_schema;<br/>
+      select count(*) from twl_tbl;<br/>
+      </pre>
       <br/>
       <textarea onInput={
         (e) => {
