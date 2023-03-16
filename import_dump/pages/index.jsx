@@ -54,6 +54,8 @@ export default function Home() {
 
         This will be done in the web worker at startup.
       </p>
+      <p>Test 1 did not return after several minutes.</p>
+      <p>Test 2 will reduce the number of rows to about 10K</p>
       <br/>
       <textarea onInput={
         (e) => {
