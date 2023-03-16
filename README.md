@@ -29,4 +29,4 @@ The README has some things to copy/paste or make up your own!
 Built from textbox, this example moves important aspects to the
 an application context, making the database easily available to 
 all parts of the application.
-(still in process)
+
