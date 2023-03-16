@@ -21,3 +21,5 @@ select * from sqlite_schema;
 select count(*) from twl_tbl;
 ```
 
+To do: try the suggestions in this article to speed things up:
+https://stackoverflow.com/questions/1711631/improve-insert-per-second-performance-of-sqlite
