@@ -15,4 +15,18 @@ There is a README with more details.
 
 ## worker
 
-Now working. See README for details.
+Uses web workers to handle all interactions with the database 
+(still in-memory). Worker interactions use a pub/sub approach.
+See README for details.
+
+## textbox
+
+Built from "worker", this example, a text box is available to enter SQL or DML.
+The README has some things to copy/paste or make up your own!
+
+## context
+
+Built from textbox, this example moves important aspects to the
+an application context, making the database easily available to 
+all parts of the application.
+(still in process)

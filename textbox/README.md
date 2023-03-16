@@ -29,6 +29,12 @@ Other queries to try:
 ```
 select * from u;
 
-select max(b) as maxb from u
+select max(b) as maxb from u;
 
+
+SELECT name FROM sqlite_schema
+WHERE type='table'
+ORDER BY name;
+
+select * from sqlite_schema;
 ```
