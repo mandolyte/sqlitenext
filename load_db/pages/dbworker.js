@@ -101,7 +101,7 @@ sqlite3InitModule().then( async (sqlite3) => {
     }
     db.exec(`COMMIT;`)
     const timeToImportDump = Date.now() - start;
-    console.log(`Time to import dump ${timeToImportDump}ms`) 
+    console.log(`Time to load file ${timeToImportDump}ms`) 
 
     postMessage("dbready")
   }   
