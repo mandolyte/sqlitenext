@@ -17,8 +17,8 @@ Time to import dump 6305ms
 With transaction support:
 ```
 Time to initialize 2ms
-Time to fetch dump file 828ms
-Time to create table twl 14ms
-Time to split into 2d Table 56ms
-Time to import dump 4273ms
+Time to fetch dump file 762ms
+Time to create table twl 13ms
+Time to split into 2d Table 65ms
+Time to load file 5017ms
 ```
