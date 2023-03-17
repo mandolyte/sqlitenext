@@ -30,3 +30,14 @@ Built from textbox, this example moves important aspects to the
 an application context, making the database easily available to 
 all parts of the application.
 
+# import_dump
+
+The demo loads a table using a dump file from sqlite3 CLI.
+It runs way too slow. See readme for more. And the "load_db"
+demo below.
+
+# load_db
+
+This demo shows loading a database table with almost 99k rows 
+by using a transaction and binding parameters to the inserts.
+This loaded in about 6s. Much better than the import_dump demo.
