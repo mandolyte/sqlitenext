@@ -35,7 +35,7 @@ async function buildString(urlOfFile) {
   let dumpFileAsString = "";
   for await (const line of makeTextFileLineIterator(urlOfFile)) {
     // processLine(line);
-    dumpFileAsString = dumpFileAsString + line;
+    dumpFileAsString = dumpFileAsString + line + "\n";
   }
   return dumpFileAsString;
 }
@@ -59,6 +59,8 @@ sqlite3InitModule().then( async (sqlite3) => {
     const timeToInit = Date.now() - start;
     console.log(`Time to initialize ${timeToInit}ms`)
     const URL = "https://raw.githubusercontent.com/mandolyte/sqlitenext/master/load_db/twl2.csv"
+
+    // https://raw.githubusercontent.com/mandolyte/sqlitenext/master/load_db/twl2.csv
     start = Date.now()
     const csvString = await buildString(URL).then( (data) => {return data})
     const timeToFetchDump = Date.now() - start;
@@ -73,8 +75,8 @@ sqlite3InitModule().then( async (sqlite3) => {
       "Reference" TEXT,
       "ID" TEXT,
       "Tags" TEXT,
-      "Occurrence" TEXT,
       "OrigWords" TEXT,
+      "Occurrence" TEXT,
       "TWLink" TEXT,
       "book_id" TEXT,
       "bcv_id" TEXT
@@ -88,15 +90,16 @@ sqlite3InitModule().then( async (sqlite3) => {
     console.log(`Time to split into 2d Table ${timeToSplitInto2dTable}ms`)
     
     start = Date.now()
-    // db.exec(`BEGIN TRANSACTION;`)
-    for (let i=0; i<tbl.length; i++) {
+    db.exec(`BEGIN TRANSACTION;`)
+    // skip the CSV header row
+    for (let i=1; i<tbl.length; i++) {
       db.exec({
-        sql: "insert into twl(reference,id,tags,occurrence,OrigWords,TWLink,book_id,bcv_id) values (?,?,?,?,?,?,?,?)",
+        sql: "insert into twl(reference,id,tags,OrigWords,occurrence,TWLink,book_id,bcv_id) values (?,?,?,?,?,?,?,?)",
         // bind by parameter index...
         bind: [tbl[i][0], tbl[i][1], tbl[i][2], tbl[i][3], tbl[i][4], tbl[i][5], tbl[i][6], tbl[i][7] ]
       });
     }
-    // db.exec(`COMMIT;`)
+    db.exec(`COMMIT;`)
     const timeToImportDump = Date.now() - start;
     console.log(`Time to import dump ${timeToImportDump}ms`) 
 

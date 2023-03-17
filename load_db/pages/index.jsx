@@ -71,9 +71,10 @@ export default function Home() {
       <pre>
       select * from sqlite_schema;<br/>
       select count(*) from twl;<br/>
+      select * from twl limit 4;<br/>
       </pre>
       <br/>
-      <textarea onInput={
+      <textarea rows="5" cols="40" onInput={
         (e) => {
           // console.log((e.target).value)
           setQuery((e.target).value)
