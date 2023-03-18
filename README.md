@@ -41,3 +41,12 @@ demo below.
 This demo shows loading a database table with almost 99k rows 
 by using a transaction and binding parameters to the inserts.
 This loaded in about 6s. Much better than the import_dump demo.
+
+# opfs_db
+
+Created from load_db above. I had to tweak the nextjs config
+to add the headers required by OPFS. 
+This did not work until I found this article:
+https://github.com/vercel/next.js/discussions/17991
+which shows how to apply the headers to all pages.
+
