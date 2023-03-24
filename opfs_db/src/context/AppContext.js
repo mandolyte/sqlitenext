@@ -26,23 +26,18 @@ export default function AppContextProvider({
     }
   }, []);
 
-  // useEffect( () => {
+  let needFileWritten = true
+  useEffect( () => {
+    if ( needFileWritten ) {
+      needFileWritten = false;
+      const _fileWorker = new Worker(new URL("fileworker.js", import.meta.url));
+      _fileWorker.postMessage(`this is a long text string.
+      Actually not that long.
+      But long enough to do a quick test.
+      `)
+    }
 
-  //   if (dbWorker && query && query !== "") {
-  //     console.log("Posting a message")
-  //     dbWorker.postMessage(query)
-  //   }
-  
-  // }, [dbWorker, query])
-
-  // useEffect( () => {
-  //   if (dbWorker) {
-  //     dbWorker.onmessage = (e) => {
-  //       setLines(lines + "\n" + e.data);
-  //       console.log('dbWorker.onmessage() Message received from worker:', e);
-  //     }
-  //   }
-  // }, [dbWorker])
+  }, []);
 
 
   // create the value for the context provider
