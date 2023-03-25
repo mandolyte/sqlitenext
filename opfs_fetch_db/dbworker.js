@@ -12,21 +12,10 @@ async function readWriteDB(fileURL) {
   // Get sync access handle
   const accessHandle = await dbHandle.createSyncAccessHandle();
   const response = await fetch(fileURL);
-  const reader = response.body.getReader();
-  let position = 0;
-  while ( true ) {
-    const { value: chunk, done: readerDone } = await reader.read();
-  // const writeBuffer = accessHandle.write(copy(chunk));
-    if ( readerDone ) {
-      break
-    } else {
-      console.log("typeof chuck:", typeof chunk, chunk)
-      const dataView = new DataView(chunk.buffer);
-      const writeBuffer = accessHandle.write(dataView, { at: position });
-      position += dataView.byteLength
-    }
-  }
-  // Persist changes to disk.
+  const content = await response.blob();
+  const bindata = await content.arrayBuffer();
+  const dataview = new DataView(bindata);
+  const writeBuffer = accessHandle.write(dataview);
   accessHandle.flush();
 
   // Always close FileSystemSyncAccessHandle if done.
@@ -85,3 +74,34 @@ onmessage = (e) => {
 
 }
 
+/* code graveyard
+
+async function readWriteDB(fileURL) {
+  const root = await navigator.storage.getDirectory();
+  const dbHandle = await root.getFileHandle("an-opfs-sqlite.db", { create: true });
+  // Get sync access handle
+  const accessHandle = await dbHandle.createSyncAccessHandle();
+  const response = await fetch(fileURL);
+  const reader = response.body.getReader();
+  let position = 0;
+  while ( true ) {
+    const { value: chunk, done: readerDone } = await reader.read();
+  // const writeBuffer = accessHandle.write(copy(chunk));
+    if ( readerDone ) {
+      break
+    } else {
+      console.log("typeof chuck:", typeof chunk, chunk)
+      const dataView = new DataView(chunk.buffer);
+      const writeBuffer = accessHandle.write(dataView, { at: position });
+      position += dataView.byteLength
+    }
+  }
+  // Persist changes to disk.
+  accessHandle.flush();
+
+  // Always close FileSystemSyncAccessHandle if done.
+  accessHandle.close();
+  return true
+}
+
+*/
