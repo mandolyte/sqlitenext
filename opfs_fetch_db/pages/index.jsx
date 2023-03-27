@@ -72,6 +72,7 @@ export default function Home() {
       select * from sqlite_schema;<br/>
       select count(*) from twl;<br/>
       select * from twl limit 4;<br/>
+      select * from pragma_table_info('twl');
       </pre>
       <br/>
       <textarea rows="5" cols="40" onInput={
