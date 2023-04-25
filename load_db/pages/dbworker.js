@@ -1,4 +1,5 @@
-import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
+// import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
+import sqlite3InitModule from "@sqlite.org/sqlite-wasm";
 
 async function* makeTextFileLineIterator(fileURL) {
   const utf8Decoder = new TextDecoder("utf-8");
