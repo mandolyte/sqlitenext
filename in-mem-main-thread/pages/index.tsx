@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
+// import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
+import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 
 export default function Home() {
   const [db, setDb] = useState<any>(null)
