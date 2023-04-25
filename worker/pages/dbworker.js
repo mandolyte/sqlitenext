@@ -1,4 +1,5 @@
-import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
+import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
+// import sqlite3InitModule from "./sqlite3-bundler-friendly.mjs";
 var db
 sqlite3InitModule().then((sqlite3) => {
   const capi = sqlite3.capi /*C-style API*/,
